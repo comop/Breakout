@@ -22,8 +22,8 @@ class Ball {
 	public Ball(Level game) {
 		posX = Level.WIDTH / 2;
 		posY = Level.HEIGHT / 2;
-		speedX = rand.nextDouble() * 3;
-		speedY = rand.nextDouble() * 3;
+		speedX = rand.nextDouble() * 2;
+		speedY = rand.nextDouble() * 2;
 		this.game = game;
 		ImageIcon ii = new ImageIcon(this.getClass().getResource(ballJpg));
 		image = ii.getImage();
@@ -39,33 +39,30 @@ class Ball {
 
 	void move() {
 		if (posX + speedX < 0) {// lewa sciana
-			speedX = Math.max(1,rand.nextDouble() * 5);
+			speedX = Math.max(1, rand.nextDouble() * 4);
 			Sound.BALL.play();
-		}
-		if (posX + speedX > Level.WIDTH - WIDTH) { // prawa sciana
-			speedX = -Math.max(1,rand.nextDouble() * 5);
+		} else if (posX + speedX > Level.WIDTH - WIDTH) { // prawa sciana
+			speedX = -Math.max(1, rand.nextDouble() * 4);
 			Sound.BALL.play();
-		}
-		if (posY + speedY < 15) { // gorna sciana
-			speedY = Math.max(1,rand.nextDouble() * 5);
+		} else if (posY + speedY < 15) { // gorna sciana
+			speedY = Math.max(1, rand.nextDouble() * 4);
 			Sound.BALL.play();
-		}
-		if (posY + speedY > Level.HEIGHT - HEIGHT) { // nizej niz paddle
+		} else if (posY + speedY > Level.HEIGHT - HEIGHT) { // nizej niz paddle
 			gameOver = true;
-		}
-		if (collisionWithPaddle()) {
-			speedY = -Math.max(1,rand.nextDouble() * 5);
-			speedX = Paddle.speedX * Math.max(1,rand.nextDouble() * 5);
+		} else if (collisionWithPaddle()) {
+			speedY = -Math.max(1, rand.nextDouble() * 4);
+			speedX = Paddle.speedX * Math.max(1, rand.nextDouble() * 4);
 			Sound.BALL.play();
-		}
-		for (int i = 0; i < Level.NUMBER_OF_BRICKS; i++) {
-			if (collisionWithBrick(i)) {
-				if (collisionWithButtomOrTopEdge(i))
-					speedY *= (-1);
-				else
-					speedX *= (-1);
-				game.bricks[i].isVisible();
-				GameController.overallScore++;
+		} else {
+			for (int i = 0; i < Level.NUMBER_OF_BRICKS; i++) {
+				if (collisionWithBrick(i)) {
+					if (collisionWithButtomOrTopEdge(i))
+						speedY *= (-1);
+					else
+						speedX *= (-1);
+					game.bricks[i].isVisible();
+					GameController.overallScore++;
+				}
 			}
 		}
 		posX += speedX;
